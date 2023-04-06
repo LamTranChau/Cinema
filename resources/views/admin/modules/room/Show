@@ -1,0 +1,256 @@
+@extends('admin.master')
+@section('module','Room')
+@section('action','index')
+@section('content')
+@push('css')
+  <link rel="stylesheet" href="{{ asset('adminNe/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' ) }}">
+  <link rel="stylesheet" href="{{ asset('adminNe/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' ) }}">
+  <link rel="stylesheet" href="{{ asset('adminNe/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' ) }}">
+   <!-- Font awesome - icon font -->
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+   <!-- Roboto -->
+   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+   <!-- Custom -->
+   <link href="{{ asset('HTML/css/restyle.css?v=1' ) }}" rel="stylesheet" />
+@endpush  
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thông tin Ghế</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id='mycontent'>
+          
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  @php 
+    $a  
+  @endphp
+
+  @foreach ($brands as $branditem)
+    <h3>{{$branditem->brandname}}</h3>
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-primary card-outline card-outline-tabs">
+          <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+              @foreach ($rooms as $roomitem)
+                <?php if($roomitem->brand_id == $branditem->id){?>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-four-{{$roomitem->roomname}}{{$branditem->id}}-tab" data-toggle="pill" href="#custom-tabs-four-{{$roomitem->roomname}}{{$branditem->id}}" role="tab" aria-controls="custom-tabs-four-{{$roomitem->roomname}}{{$branditem->id}}" aria-selected="true" value='{{$roomitem->id}}'>{{$roomitem->roomname}}</a>
+                  </li>
+                <?php }?>
+              @endforeach
+            </ul>
+          </div>
+          <div class="card-body">
+            <div class="tab-content" id="custom-tabs-four-tabContent">
+              @foreach ($rooms as $roomitem)                
+                  <?php if($roomitem->brand_id == $branditem->id){?>
+                    <div class="tab-pane fade show" id="custom-tabs-four-{{$roomitem->roomname}}{{$branditem->id}}" role="tabpanel" aria-labelledby="custom-tabs-four-{{$roomitem->roomname}}{{$branditem->id}}-tab">
+                      {{$roomitem->roomname}}
+                      <div class="wrapper place-wrapper">
+                        <!-- Main content -->
+                        <div class="place-form-area">
+                            <section class="container">
+                                <div class="choose-sits">
+                                    <div class="col-sm-12 col-lg-10 col-lg-offset-1">
+                                        <div class="sits-area hidden-xs">
+                                            <div class="sits-anchor">screen</div>
+                                            <div class="sits">
+                                                <aside class="sits__line">
+                                                    <span class="sits__indecator">A</span>
+                                                    <span class="sits__indecator">B</span>
+                                                    <span class="sits__indecator">C</span>
+                                                    <span class="sits__indecator">D</span>
+                                                    <span class="sits__indecator">E</span>
+                                                    <span class="sits__indecator">F</span>
+                                                    <span class="sits__indecator">G</span>
+                                                    <span class="sits__indecator">I</span>
+                                                    <span class="sits__indecator additional-margin">J</span>
+                                                    <span class="sits__indecator">K</span>
+                                                    <span class="sits__indecator">L</span>
+                                                </aside>                                               
+                                                <?php for ($a=65; $a < 77; $a++) { ?>
+                                                  <div class="sits__row">
+                                                    <?php for ($i=1; $i < 19; $i++) { ?>
+                                                      <?php if ($a == 65 && $i > 1 && $i < 18){ ?>
+                                                        <span class="sits__place sits-price--cheap" data-toggle="modal"data-target="#exampleModal" name='{{$roomitem->id}}'>{{chr($a) . $i}}
+                                                        </span>
+                                                      <?php } ?>
+                                                      <?php if ($a > 65 && $a < 72 && $i > 0 && $i < 19){ ?>
+                                                        <span class="sits__place sits-price--middle" data-toggle="modal"data-target="#exampleModal" name='{{$roomitem->id}}'>{{chr($a) . $i}}
+                                                        </span>
+                                                      <?php } ?>
+                                                      <?php if ($a == 73 && $i > 2 && $i < 17){ ?>
+                                                        <span class="sits__place sits-price--cheap" data-toggle="modal"data-target="#exampleModal" name='{{$roomitem->id}}'>{{chr($a) . $i}}
+                                                        </span>
+                                                      <?php } ?>
+                                                      <?php if ($a == 74 && $i > 4 && $i < 15){ ?>
+                                                        <span class="sits__place sits-price--expensive" style="margin-top: 25px;"  data-toggle="modal"data-target="#exampleModal" name='{{$roomitem->id}}'>{{chr($a) . $i}}
+                                                        </span>
+                                                      <?php } ?>
+                                                      <?php if ($a == 75 && $i > 4 && $i < 15){ ?>
+                                                        <span class="sits__place sits-price--expensive" data-toggle="modal"data-target="#exampleModal" name='{{$roomitem->id}}'>{{chr($a) . $i}}
+                                                        </span>
+                                                      <?php } ?>
+                                                      <?php if ($a == 76 && $i > 5 && $i < 14){ ?>
+                                                        <span class="sits__place sits-price--expensive"  data-toggle="modal"data-target="#exampleModal" name='{{$roomitem->id}}'>{{chr($a) . $i}}
+                                                        </span>
+                                                      <?php } ?>                                                             
+                                                    <?php } ?>
+                                                  </div>
+                                                <?php } ?>
+                                 
+                                                <aside class="sits__checked" style="opacity: 0;">
+                                                    <div class="checked-place">
+                                                    </div>
+                                                    <div class="checked-result">$0
+                                                    </div>
+                                                </aside>
+                                                <footer class="sits__number">
+                                                    <span class="sits__indecator">1</span>
+                                                    <span class="sits__indecator">2</span>
+                                                    <span class="sits__indecator">3</span>
+                                                    <span class="sits__indecator">4</span>
+                                                    <span class="sits__indecator">5</span>
+                                                    <span class="sits__indecator">6</span>
+                                                    <span class="sits__indecator">7</span>
+                                                    <span class="sits__indecator">8</span>
+                                                    <span class="sits__indecator">9</span>
+                                                    <span class="sits__indecator">10</span>
+                                                    <span class="sits__indecator">11</span>
+                                                    <span class="sits__indecator">12</span>
+                                                    <span class="sits__indecator">13</span>
+                                                    <span class="sits__indecator">14</span>
+                                                    <span class="sits__indecator">15</span>
+                                                    <span class="sits__indecator">16</span>
+                                                    <span class="sits__indecator">17</span>
+                                                    <span class="sits__indecator">18</span>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div> 
+                      </div>
+                      <div class="clearfix"></div>                  
+                    </div>
+                  <?php } ?>                
+              @endforeach
+            </div>
+          </div>
+          <div id="showSeat">sdadsdas</div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  @endforeach
+  
+
+  @push('js')
+    <script src="{{ asset('adminNe/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/jszip/jszip.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/pdfmake/pdfmake.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/pdfmake/vfs_fonts.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+    <script src="{{ asset('adminNe/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+  @endpush
+
+  @push('jshand')
+  <script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+  </script>
+  <script>
+     $(document).ready(function() {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+      })
+
+      // $('.nav-link').click(function(e){
+      //       e.preventDefault();
+      //       var id = $(this).attr('value');
+      //       $.ajax({
+      //           type: "POST",
+      //           data: {idroom : id},
+      //           url: "{{ route('admin.room.show') }}",
+      //           dataType: "json",
+      //           success: function (responsive) {
+      //             console.log(responsive);
+      //           }
+      //       });
+      //   })
+
+      
+      $('.nav-link').click(function(e){
+            e.preventDefault();
+            var id = $(this).attr('value');
+            var seat = '';
+            $.ajax({
+                type: "POST",
+                data: {idroom : id},
+                url: "{{ route('admin.room.testshow') }}",
+                dataType: "json",
+                success: function (arr) {
+                 $a = arr["A"];
+                 $b = arr["B"];
+                 $c = arr["C"];
+                 $d = arr["D"];
+                 $e = arr["E"];
+                 $f = arr["F"];
+                 $g = arr["G"];
+                 $i = arr["I"];
+                 $j = arr["J"];
+                 $k = arr["K"];
+                 $l = arr["L"];
+                 return $a,$b;
+                }
+            });
+        })
+
+
+        $('.sits__place').click(function(e){
+            // e.preventDefault();
+            var id_room = $(this).attr('name');
+            var name_seat = $(this).html();
+            $.ajax({
+                type: "POST",
+                data: {idroom : id_room,nameseat: name_seat},
+                url: "{{ route('admin.room.showseat') }}",
+                dataType: "html",
+                success: function (responsive) {
+                  console.log(responsive);
+                  $('#mycontent').html(responsive);           
+                }
+            });
+        })
+  </script>
+  @endpush
+@endsection
